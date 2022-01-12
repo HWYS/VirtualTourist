@@ -53,10 +53,7 @@ extension MapViewController  {
         }
         let point = gestureRecognizer.location(in: mapView)
         let coord = mapView.convert(point, toCoordinateFrom: mapView)
-        getCityNameByCoordinate(coordinte: coord) { locationName in
-            
-            self.saveLocation(coordinte: coord, locationName: locationName)
-        }
+        saveLocation(coordinte: coord)
         
     }
     
@@ -89,22 +86,21 @@ extension MapViewController  {
         annotation.title = locationName
         mapView.addAnnotation(annotation)
         
-        saveLocation(coordinte: coordinate, locationName: locationName)
+        
     }
     
-    private func saveLocation(coordinte: CLLocationCoordinate2D, locationName: String) {
+    private func saveLocation(coordinte: CLLocationCoordinate2D) {
         let pin = Pin(context: dataController.viewContext)
         pin.latitude = coordinte.latitude
         pin.longitude = coordinte.longitude
         pin.creationDate = Date()
-        pin.locationName = locationName
-        
-        
-        LocationPins.pins.append(pin)
-        //addAnnotationsToMap()
-        
-        try? dataController.viewContext.save()
-        isLoadingData(isLoading: false)
+        getCityNameByCoordinate(coordinte: coordinte) { location in
+            pin.locationName = location
+            LocationPins.pins.append(pin)
+            self.addAnnotation(coordinate: coordinte, locationName: location)
+            try? self.dataController.viewContext.save()
+            self.isLoadingData(isLoading: false)
+        }
     }
 }
 
@@ -129,7 +125,12 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            
+            let destination = self.storyboard?.instantiateViewController(identifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
+            destination.dataController = self.dataController
+            let pin = LocationPins.pins.first(where: {$0.latitude == view.annotation?.coordinate.latitude})
+            let indexPath = fetchedResultsController.indexPath(forObject: pin!)
+            destination.pin = fetchedResultsController.object(at: indexPath!)
+            self.navigationController?.pushViewController(destination, animated: true)
         }
         
     }
