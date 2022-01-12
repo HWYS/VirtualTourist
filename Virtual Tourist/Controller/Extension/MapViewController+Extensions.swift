@@ -97,10 +97,28 @@ extension MapViewController  {
         getCityNameByCoordinate(coordinte: coordinte) { location in
             pin.locationName = location
             LocationPins.pins.append(pin)
-            self.addAnnotation(coordinate: coordinte, locationName: location)
+            
             try? self.dataController.viewContext.save()
+            DispatchQueue.main.async {
+                self.addAnnotation(coordinate: coordinte, locationName: location)
+            }
+            
+            
             self.isLoadingData(isLoading: false)
         }
+    }
+    
+    func saveRegion(withKey key:String) {
+        let locationData = [mapView.region.center.latitude, mapView.region.center.longitude,
+                            mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta]
+        defaults.set(locationData, forKey: key)
+    }
+    
+    func loadRegion(withKey key:String) -> MKCoordinateRegion? {
+        guard let region = defaults.object(forKey: key) as? [Double] else { return nil }
+        let center = CLLocationCoordinate2D(latitude: region[0], longitude: region[1])
+        let span = MKCoordinateSpan(latitudeDelta: region[2], longitudeDelta: region[3])
+        return MKCoordinateRegion(center: center, span: span)
     }
 }
 
@@ -128,10 +146,16 @@ extension MapViewController: MKMapViewDelegate {
             let destination = self.storyboard?.instantiateViewController(identifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
             destination.dataController = self.dataController
             let pin = LocationPins.pins.first(where: {$0.latitude == view.annotation?.coordinate.latitude})
-            let indexPath = fetchedResultsController.indexPath(forObject: pin!)
-            destination.pin = fetchedResultsController.object(at: indexPath!)
+            //let indexPath = fetchedResultsController.indexPath(forObject: pin!)
+            //print(indexPath)
+            
+            destination.pin = pin
             self.navigationController?.pushViewController(destination, animated: true)
         }
         
+    }
+    
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        saveRegion(withKey: "mapregion")
     }
 }

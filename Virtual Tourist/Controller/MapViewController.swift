@@ -12,7 +12,7 @@ import CoreData
 class MapViewController: UIViewController {
     var dataController: DataController!
     @IBOutlet weak var mapView: MKMapView!
-    
+    let defaults = UserDefaults.standard
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var fetchedResultsController:  NSFetchedResultsController<Pin>!
     
@@ -21,6 +21,10 @@ class MapViewController: UIViewController {
         // Do any additional setup after loading the view.
         setUpFetchResultsController()
         addLogPressListenerToMap()
+        
+        if let region = loadRegion(withKey: "mapregion") {
+            mapView.region = region
+        }
     }
     
     private func setUpFetchResultsController() {
@@ -45,6 +49,12 @@ class MapViewController: UIViewController {
             addAnnotationsToMap()
         }
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        fetchedResultsController = nil
+        saveRegion(withKey: "mapregion")
+    }
 }
 
 
@@ -57,7 +67,10 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
         }
         switch type {
         case .insert:
-            addAnnotationsToMap()
+            DispatchQueue.main.async {
+                self.addAnnotationsToMap()
+            }
+            
             break
         default: break
         }

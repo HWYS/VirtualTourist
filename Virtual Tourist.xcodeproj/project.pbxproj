@@ -17,6 +17,7 @@
 		FD220439278893E500E4BCDE /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD220438278893E500E4BCDE /* DataController.swift */; };
 		FDA3808F278D8BE7002497EE /* MapViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA3808E278D8BE7002497EE /* MapViewController+Extensions.swift */; };
 		FDA38092278DFB19002497EE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA38091278DFB19002497EE /* PhotoAlbumViewController.swift */; };
+		FDB73ACC278F37F100557E45 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB73ACB278F37F100557E45 /* PhotoCollectionViewCell.swift */; };
 		FDC0A009278AC3DF002C7A58 /* LocationPins.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC0A008278AC3DF002C7A58 /* LocationPins.swift */; };
 		FDC0A00C278AC53E002C7A58 /* FlickrApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC0A00B278AC53E002C7A58 /* FlickrApiClient.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		FD220438278893E500E4BCDE /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		FDA3808E278D8BE7002497EE /* MapViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapViewController+Extensions.swift"; sourceTree = "<group>"; };
 		FDA38091278DFB19002497EE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		FDB73ACB278F37F100557E45 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		FDC0A008278AC3DF002C7A58 /* LocationPins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPins.swift; sourceTree = "<group>"; };
 		FDC0A00B278AC53E002C7A58 /* FlickrApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,6 +83,7 @@
 		FD2204302788364000E4BCDE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FDB73ACA278F37D000557E45 /* Collection View Cell */,
 				FD2204252788337900E4BCDE /* Assets.xcassets */,
 				FD2204312788364700E4BCDE /* Main UI */,
 			);
@@ -131,6 +134,14 @@
 				FDA3808E278D8BE7002497EE /* MapViewController+Extensions.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		FDB73ACA278F37D000557E45 /* Collection View Cell */ = {
+			isa = PBXGroup;
+			children = (
+				FDB73ACB278F37F100557E45 /* PhotoCollectionViewCell.swift */,
+			);
+			path = "Collection View Cell";
 			sourceTree = "<group>";
 		};
 		FDC0A00A278AC52C002C7A58 /* Api */ = {
@@ -213,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD220439278893E500E4BCDE /* DataController.swift in Sources */,
+				FDB73ACC278F37F100557E45 /* PhotoCollectionViewCell.swift in Sources */,
 				FDA3808F278D8BE7002497EE /* MapViewController+Extensions.swift in Sources */,
 				FDA38092278DFB19002497EE /* PhotoAlbumViewController.swift in Sources */,
 				FD220437278892FF00E4BCDE /* VirtualTourist.xcdatamodeld in Sources */,
@@ -369,6 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZFTPS95599;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Virtual Tourist/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -396,6 +409,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZFTPS95599;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Virtual Tourist/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
