@@ -53,8 +53,8 @@ extension MapViewController  {
         }
         let point = gestureRecognizer.location(in: mapView)
         let coord = mapView.convert(point, toCoordinateFrom: mapView)
-        saveLocation(coordinte: coord)
-        
+        //saveLocation(coordinte: coord)
+        addAnnotation(coordinate: coord)
     }
     
     func getCityNameByCoordinate(coordinte: CLLocationCoordinate2D, completion: @escaping (String) -> Void){
@@ -79,17 +79,23 @@ extension MapViewController  {
         }
     }
     
-    private func addAnnotation(coordinate: CLLocationCoordinate2D, locationName: String) {
+    private func addAnnotation(coordinate: CLLocationCoordinate2D) {
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        annotation.title = locationName
-        mapView.addAnnotation(annotation)
-        
-        
+        getCityNameByCoordinate(coordinte: coordinate) { locationName in
+            annotation.title = locationName
+            self.saveLocation(coordinte: coordinate) {
+                DispatchQueue.main.async {
+                    self.addAnnotationsToMap()
+                    self.isLoadingData(isLoading: false)
+                }
+                
+            }
+        }
     }
     
-    private func saveLocation(coordinte: CLLocationCoordinate2D) {
+    private func saveLocation(coordinte: CLLocationCoordinate2D, completion: @escaping () -> Void) {
         let pin = Pin(context: dataController.viewContext)
         pin.latitude = coordinte.latitude
         pin.longitude = coordinte.longitude
@@ -97,14 +103,8 @@ extension MapViewController  {
         getCityNameByCoordinate(coordinte: coordinte) { location in
             pin.locationName = location
             LocationPins.pins.append(pin)
-            
             try? self.dataController.viewContext.save()
-            DispatchQueue.main.async {
-                self.addAnnotation(coordinate: coordinte, locationName: location)
-            }
-            
-            
-            self.isLoadingData(isLoading: false)
+            completion()
         }
     }
     
@@ -141,14 +141,15 @@ extension MapViewController: MKMapViewDelegate {
         return pinView
     }
     
+    
+    
+    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             let destination = self.storyboard?.instantiateViewController(identifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
             destination.dataController = self.dataController
             let pin = LocationPins.pins.first(where: {$0.latitude == view.annotation?.coordinate.latitude})
-            //let indexPath = fetchedResultsController.indexPath(forObject: pin!)
-            //print(indexPath)
-            
+           
             destination.pin = pin
             self.navigationController?.pushViewController(destination, animated: true)
         }

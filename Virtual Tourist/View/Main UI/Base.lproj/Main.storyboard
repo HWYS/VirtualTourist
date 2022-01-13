@@ -27,6 +27,18 @@
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                                 <color key="color" systemColor="labelColor"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to place a pin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdS-hu-s1D">
+                                <rect key="frame" x="82" y="88" width="250" height="35"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="93u-iT-tE5"/>
+                                    <constraint firstAttribute="height" constant="35" id="idi-Jx-S15"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -35,11 +47,15 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ujc-pJ-Oj8" secondAttribute="trailing" id="4dp-Vg-5jp"/>
                             <constraint firstItem="ujc-pJ-Oj8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="IYU-V8-WSW"/>
                             <constraint firstItem="qzH-Ps-6uF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RFq-QX-oMz"/>
+                            <constraint firstItem="WdS-hu-s1D" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YYR-qK-lzZ"/>
                             <constraint firstItem="qzH-Ps-6uF" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ijW-LP-U5p"/>
                             <constraint firstItem="ujc-pJ-Oj8" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="vKG-rV-Et7"/>
+                            <constraint firstItem="WdS-hu-s1D" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="yLR-CC-xe5"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jW6-Du-lUF"/>
+                    <navigationItem key="navigationItem" id="jW6-Du-lUF">
+                        <nil key="title"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="qzH-Ps-6uF" id="9QR-1k-Qjy"/>
                         <outlet property="mapView" destination="ujc-pJ-Oj8" id="WaD-rO-b6z"/>
@@ -94,6 +110,9 @@
                                                 <constraint firstAttribute="bottom" secondItem="OZA-U5-4vh" secondAttribute="bottom" id="vTf-Bu-lSr"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <connections>
+                                            <outlet property="iamgeView" destination="OZA-U5-4vh" id="y8T-gd-MOg"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -105,8 +124,8 @@
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                                 <color key="color" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No images for this location yet" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urk-v9-vRq">
-                                <rect key="frame" x="75" y="436" width="264.5" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No images for current location yet" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urk-v9-vRq">
+                                <rect key="frame" x="59" y="436" width="296" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

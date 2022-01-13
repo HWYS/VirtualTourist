@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class PhotoAlbumViewController: UIViewController{
     
 
     @IBOutlet weak var mapView: MKMapView!
@@ -26,6 +26,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
 
         // Do any additional setup after loading the view.
         addPinToMap()
+        setupFetchedResultsController()
     }
     
     
@@ -38,6 +39,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         let span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
         let region =  MKCoordinateRegion(center: annotation.coordinate, span: span)
         mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        mapView.isUserInteractionEnabled = false
     }
     
     fileprivate func setupFetchedResultsController() {
@@ -47,7 +49,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(pin)-pins")
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(String(describing: pin))-pins")
         fetchedResultsController.delegate = self
 
         do {
@@ -61,18 +63,9 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     private func getPhotoAlbum() {
-        
+        FlickrApiClient.getPhotos(lat: pin.latitude, long: pin.longitude)
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
-        return cell
-    }
     
     /*
     // MARK: - Navigation
@@ -83,28 +76,22 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         // Pass the selected object to the new view controller.
     }
     */
-
-}
-
-extension PhotoAlbumViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let reuseId = "pin"
-        
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
-            pinView!.pinTintColor = .red
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+    private func isLoadingData(_ isLoading: Bool){
+        if isLoading {
+            activityIndicator.startAnimating()
+        }else {
+            activityIndicator.stopAnimating()
         }
-        else {
-            pinView!.annotation = annotation
-        }
-        
-        return pinView
+        newCollectionButton.isEnabled = !isLoading
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        fetchedResultsController = nil
     }
 }
+
+
 
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
     

@@ -68,7 +68,7 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
         switch type {
         case .insert:
             DispatchQueue.main.async {
-                self.addAnnotationsToMap()
+                //self.addAnnotationsToMap()
             }
             
             break
