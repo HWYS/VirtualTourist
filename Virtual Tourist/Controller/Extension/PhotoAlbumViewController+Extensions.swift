@@ -18,7 +18,19 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let photoAlbum = fetchedResultsController.object(at: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
+        //cell.iamgeView.image = UIImage(named: "Placeholder")
+        /*FlickrApiClient.downloadImage(imageUrl: photoAlbum.photoURL!) { data, error in
+            if let data = data {
+                DispatchQueue.main.async {
+                    cell.iamgeView.image = UIImage(data: data)
+                }
+                
+                photoAlbum.photo = data
+                try? self.dataController.viewContext.save()
+            }
+        }*/
         cell.iamgeView.image = UIImage(data: photoAlbum.photo!)
+        
         return cell
     }
     

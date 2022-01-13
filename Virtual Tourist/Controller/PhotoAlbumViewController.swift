@@ -27,6 +27,7 @@ class PhotoAlbumViewController: UIViewController{
         // Do any additional setup after loading the view.
         addPinToMap()
         setupFetchedResultsController()
+        getPhotoAlbum()
     }
     
     
@@ -57,16 +58,53 @@ class PhotoAlbumViewController: UIViewController{
         } catch {
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
         }
+        
+        if fetchedResultsController.sections![0].numberOfObjects < 0 {
+            getPhotoAlbum()
+        }
     }
     
     @IBAction func newCollectionButtonClick(_ sender: Any) {
+        getPhotoAlbum()
     }
     
     private func getPhotoAlbum() {
-        FlickrApiClient.getPhotos(lat: pin.latitude, long: pin.longitude)
+        if isConnectedToInternet {
+            isLoadingData(true)
+            FlickrApiClient.getPhotos(lat: pin.latitude, lon: pin.longitude) { photoIds, error in
+                if photoIds.count > 0 {
+                    for item in photoIds {
+                        let photo = PhotoAlbum(context: self.dataController.viewContext)
+                        photo.pin = self.pin
+                        photo.creationDate = Date()
+                        photo.photoURL = "https://farm\(item.farmNumber).staticflickr.com/\(item.serverId)/\(item.id)_\(item.secret).jpg"
+                        print(photo.photoURL)
+                        FlickrApiClient.downloadImage(imageUrl: photo.photoURL!) { data, error in
+                            if let data = data {
+                                photo.photo = data
+                                try? self.dataController.viewContext.save()
+                                DispatchQueue.main.async {
+                                    self.collectionView.reloadData()
+                                    //self.setGetNewPhotosButtonEnabled(to: true)
+                                    //self.isLoadingData(false)
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                    self.isLoadingData(false)
+                
+                }else {
+                    // Show Lable
+                    self.isLoadingData(false)
+                }
+            }
+        }else {
+            
+        }
+    
     }
-    
-    
     /*
     // MARK: - Navigation
 
@@ -94,5 +132,15 @@ class PhotoAlbumViewController: UIViewController{
 
 
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
-    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            //collectionView.insertItems(at: [newIndexPath!])
+            break
+        case .delete:
+            collectionView.deleteItems(at: [indexPath!])
+            break
+        default: ()
+        }
+    }
 }

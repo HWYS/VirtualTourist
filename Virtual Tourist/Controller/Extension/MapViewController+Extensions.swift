@@ -53,8 +53,7 @@ extension MapViewController  {
         }
         let point = gestureRecognizer.location(in: mapView)
         let coord = mapView.convert(point, toCoordinateFrom: mapView)
-        //saveLocation(coordinte: coord)
-        addAnnotation(coordinate: coord)
+        saveLocation(coordinte: coord)
     }
     
     func getCityNameByCoordinate(coordinte: CLLocationCoordinate2D, completion: @escaping (String) -> Void){
@@ -83,7 +82,8 @@ extension MapViewController  {
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        getCityNameByCoordinate(coordinte: coordinate) { locationName in
+        
+        /*getCityNameByCoordinate(coordinte: coordinate) { locationName in
             annotation.title = locationName
             self.saveLocation(coordinte: coordinate) {
                 DispatchQueue.main.async {
@@ -92,19 +92,21 @@ extension MapViewController  {
                 }
                 
             }
-        }
+        }*/
     }
     
-    private func saveLocation(coordinte: CLLocationCoordinate2D, completion: @escaping () -> Void) {
+    private func saveLocation(coordinte: CLLocationCoordinate2D) {
         let pin = Pin(context: dataController.viewContext)
         pin.latitude = coordinte.latitude
         pin.longitude = coordinte.longitude
         pin.creationDate = Date()
+        
+        
         getCityNameByCoordinate(coordinte: coordinte) { location in
             pin.locationName = location
             LocationPins.pins.append(pin)
             try? self.dataController.viewContext.save()
-            completion()
+            self.addAnnotationsToMap()
         }
     }
     

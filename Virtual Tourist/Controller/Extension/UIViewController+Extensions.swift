@@ -9,11 +9,8 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    static var isConnectedToInternet: Bool {
+    var isConnectedToInternet: Bool {
         return NetworkReachabilityManager()!.isReachable
     }
     
-    enum Status {
-        case notConnected, connected, other
-    }
 }
