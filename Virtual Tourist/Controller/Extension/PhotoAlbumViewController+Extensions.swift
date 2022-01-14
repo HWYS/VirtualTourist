@@ -23,6 +23,17 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         cell.iamgeView.image = UIImage(named: "Placeholder")
         if let data = photoAlbum.photo {
             cell.iamgeView.image = UIImage(data: data)
+        }else {
+            FlickrApiClient.downloadImage(imageUrl: photoAlbum.photoURL!) { data, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        cell.iamgeView.image = UIImage(data: data)
+                    }
+                    photoAlbum.photo = data
+                    DataModel.photos[indexPath.row].photo = data
+                    try? self.dataController.viewContext.save()
+                }
+            }
         }
         
         return cell
