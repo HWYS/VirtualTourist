@@ -93,18 +93,18 @@
 			children = (
 				FDB73ACA278F37D000557E45 /* Collection View Cell */,
 				FD2204252788337900E4BCDE /* Assets.xcassets */,
-				FD2204312788364700E4BCDE /* Main UI */,
+				FD2204312788364700E4BCDE /* Storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		FD2204312788364700E4BCDE /* Main UI */ = {
+		FD2204312788364700E4BCDE /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
 				FD2204222788337800E4BCDE /* Main.storyboard */,
 				FD2204272788337900E4BCDE /* LaunchScreen.storyboard */,
 			);
-			path = "Main UI";
+			path = Storyboard;
 			sourceTree = "<group>";
 		};
 		FD220432278843EC00E4BCDE /* Model */ = {
@@ -119,7 +119,7 @@
 		FD220433278843F700E4BCDE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				FDA38090278D8CF8002497EE /* Extension */,
+				FDA38090278D8CF8002497EE /* Extensions */,
 				FD2204202788337800E4BCDE /* MapViewController.swift */,
 				FDA38091278DFB19002497EE /* PhotoAlbumViewController.swift */,
 			);
@@ -136,14 +136,14 @@
 			path = "Core Data Model";
 			sourceTree = "<group>";
 		};
-		FDA38090278D8CF8002497EE /* Extension */ = {
+		FDA38090278D8CF8002497EE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				FDA3808E278D8BE7002497EE /* MapViewController+Extensions.swift */,
 				FDB40C4B27903BA4002D5C68 /* PhotoAlbumViewController+Extensions.swift */,
 				FDB40C4F27903E06002D5C68 /* UIViewController+Extensions.swift */,
 			);
-			path = Extension;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		FDB1FC1527908C7F008954D3 /* Response */ = {

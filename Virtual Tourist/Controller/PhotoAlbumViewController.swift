@@ -81,7 +81,11 @@ class PhotoAlbumViewController: UIViewController{
     }
     
     @IBAction func newCollectionButtonClick(_ sender: Any) {
-        deleteFromDb()
+        if isConnectedToInternet {
+            deleteFromDb()
+        }else {
+            showAlert(message: "Internet connection is not available")
+        }
         
     }
     
