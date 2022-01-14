@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -41,7 +42,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="WhiteBg"/>
                         <constraints>
                             <constraint firstItem="ujc-pJ-Oj8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="3aT-UP-WBR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ujc-pJ-Oj8" secondAttribute="trailing" id="4dp-Vg-5jp"/>
@@ -140,7 +141,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tQF-vN-ayi"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="WhiteBg"/>
                         <constraints>
                             <constraint firstItem="Hv1-ll-Orj" firstAttribute="leading" secondItem="tQF-vN-ayi" secondAttribute="leading" id="4pK-dj-AZ3"/>
                             <constraint firstItem="tJ0-w4-I36" firstAttribute="centerX" secondItem="uXm-er-kVy" secondAttribute="centerX" id="6VB-fS-LIJ"/>
@@ -189,6 +190,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="WhiteBg">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
