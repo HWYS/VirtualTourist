@@ -11,11 +11,10 @@ import CoreLocation
 class FlickrApiClient {
     struct Constants {
         static let API_KEY = "a6356c4c9026a72841c9f6be92dcc29c"
-        //a7820814cb815f5f
         static let BASE_URL = "https://api.flickr.com/services/rest"
         static let FLICKR_API_METHOD = "flickr.photos.search"
         static let PHOTOS_PER_PAGE = 20
-        static let PAGE_NO = Int.random(in: 1 ... 20)
+        static let PAGE_NO = min(43864, 4000/PHOTOS_PER_PAGE)
         static let ACCURACY = 11
         static let RESPONSE_FORMAT = "json"
     }

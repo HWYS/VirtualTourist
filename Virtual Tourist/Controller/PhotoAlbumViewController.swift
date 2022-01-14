@@ -119,10 +119,7 @@ class PhotoAlbumViewController: UIViewController{
             photo.pin = self.pin
             photo.creationDate = Date()
             photo.photoURL = "https://farm\(item.farmNumber).staticflickr.com/\(item.serverId)/\(item.id)_\(item.secret).jpg"
-            /*let imageUrl = URL(string: photo.photoURL!)
-            if let data = try? Data(contentsOf: imageUrl!) {
-                photo.photo = data
-            }*/
+            
             try? self.dataController.viewContext.save()
             DataModel.photos.append(photo)
             

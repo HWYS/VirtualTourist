@@ -85,7 +85,7 @@
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Hv1-ll-Orj">
                                 <rect key="frame" x="0.0" y="294" width="414" height="517"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" name="WhiteBg"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="7bX-RR-HmU">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -102,16 +102,25 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OZA-U5-4vh">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                    <color key="backgroundColor" systemColor="systemGray2Color"/>
                                                 </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="tcY-QY-S6b">
+                                                    <rect key="frame" x="45.5" y="45.5" width="37" height="37"/>
+                                                    <color key="tintColor" red="0.28872764109999999" green="0.64399796720000002" blue="0.82733684780000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="OZA-U5-4vh" firstAttribute="top" secondItem="eB5-e7-slV" secondAttribute="top" id="1Mm-4L-9ZJ"/>
+                                                <constraint firstItem="tcY-QY-S6b" firstAttribute="centerX" secondItem="eB5-e7-slV" secondAttribute="centerX" id="59d-PL-PwA"/>
+                                                <constraint firstItem="tcY-QY-S6b" firstAttribute="centerY" secondItem="eB5-e7-slV" secondAttribute="centerY" id="DC1-04-7sD"/>
                                                 <constraint firstAttribute="trailing" secondItem="OZA-U5-4vh" secondAttribute="trailing" id="LK5-qw-lKC"/>
                                                 <constraint firstItem="OZA-U5-4vh" firstAttribute="leading" secondItem="eB5-e7-slV" secondAttribute="leading" id="beb-dV-zn4"/>
                                                 <constraint firstAttribute="bottom" secondItem="OZA-U5-4vh" secondAttribute="bottom" id="vTf-Bu-lSr"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="tcY-QY-S6b" id="LjJ-yd-yEh"/>
                                             <outlet property="iamgeView" destination="OZA-U5-4vh" id="y8T-gd-MOg"/>
                                         </connections>
                                     </collectionViewCell>
@@ -196,8 +205,8 @@
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

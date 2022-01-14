@@ -91,7 +91,7 @@
 		FD2204302788364000E4BCDE /* View */ = {
 			isa = PBXGroup;
 			children = (
-				FDB73ACA278F37D000557E45 /* Collection View Cell */,
+				FDB73ACA278F37D000557E45 /* CollectionViewCell */,
 				FD2204252788337900E4BCDE /* Assets.xcassets */,
 				FD2204312788364700E4BCDE /* Storyboard */,
 			);
@@ -111,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				FDC0A00A278AC52C002C7A58 /* Api */,
-				FD220434278892D700E4BCDE /* Core Data Model */,
+				FD220434278892D700E4BCDE /* CoreDataModel */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -126,14 +126,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		FD220434278892D700E4BCDE /* Core Data Model */ = {
+		FD220434278892D700E4BCDE /* CoreDataModel */ = {
 			isa = PBXGroup;
 			children = (
 				FDC0A008278AC3DF002C7A58 /* DataModel.swift */,
 				FD220438278893E500E4BCDE /* DataController.swift */,
 				FD220435278892FF00E4BCDE /* VirtualTourist.xcdatamodeld */,
 			);
-			path = "Core Data Model";
+			path = CoreDataModel;
 			sourceTree = "<group>";
 		};
 		FDA38090278D8CF8002497EE /* Extensions */ = {
@@ -154,12 +154,12 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
-		FDB73ACA278F37D000557E45 /* Collection View Cell */ = {
+		FDB73ACA278F37D000557E45 /* CollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
 				FDB73ACB278F37F100557E45 /* PhotoCollectionViewCell.swift */,
 			);
-			path = "Collection View Cell";
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		FDC0A00A278AC52C002C7A58 /* Api */ = {
