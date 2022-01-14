@@ -13,4 +13,9 @@ extension UIViewController {
         return NetworkReachabilityManager()!.isReachable
     }
     
+    func showAlert(message: String) {
+        let alertVC = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        present(alertVC, animated: true)
+    }
 }

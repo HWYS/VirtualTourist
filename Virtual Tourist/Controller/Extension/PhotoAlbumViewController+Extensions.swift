@@ -9,53 +9,54 @@ import Foundation
 import UIKit
 import MapKit
 
-extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchedResultsController.sections?[0].numberOfObjects ?? 0
+        return fetchedResultsController.sections?[0].numberOfObjects ?? DataModel.photos.count
+       
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let photoAlbum = fetchedResultsController.object(at: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
-        //cell.iamgeView.image = UIImage(named: "Placeholder")
-        /*FlickrApiClient.downloadImage(imageUrl: photoAlbum.photoURL!) { data, error in
-            if let data = data {
-                DispatchQueue.main.async {
-                    cell.iamgeView.image = UIImage(data: data)
-                }
-                
-                photoAlbum.photo = data
-                try? self.dataController.viewContext.save()
-            }
-        }*/
-        cell.iamgeView.image = UIImage(data: photoAlbum.photo!)
+        cell.iamgeView.image = UIImage(named: "Placeholder")
+        if let data = photoAlbum.photo {
+            cell.iamgeView.image = UIImage(data: data)
+        }
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photoToDelete = fetchedResultsController.object(at: indexPath)
+        dataController.viewContext.delete(photoToDelete)
+        try? dataController.viewContext.save()
+        DataModel.photos.remove(at: indexPath.row)
+    }
+}
+
+extension PhotoAlbumViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding = insets.right * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - padding
+        let widthOfItem = availableWidth / itemsPerRow
         
-        let bounds = collectionView.bounds
-        
-        return CGSize(width: (bounds.width/2)-4, height: bounds.height/2)
-        
+        return CGSize(width: widthOfItem, height: widthOfItem)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        return UIEdgeInsets(top:2, left:2, bottom:2, right:2)
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return insets
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        
-        return 0
-        
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return insets.right
     }
 }
 

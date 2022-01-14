@@ -45,7 +45,7 @@ class MapViewController: UIViewController {
     
     private func getLocationsFromDb(){
         if let resutls = fetchedResultsController.fetchedObjects {
-            LocationPins.pins = resutls
+            DataModel.pins = resutls
             addAnnotationsToMap()
         }
     }

@@ -39,24 +39,6 @@ class FlickrApiClient {
     }
     
     class func getPhotos(lat: Double, lon: Double, completion: @escaping ([Photo], Error?) -> Void) {
-        /*let urlString = "\(Constants.BASE_URL)?api_key=\(Constants.API_KEY)&method=\(Constants.FLICKR_API_METHOD)&per_page=\(Constants.PHOTOS_PER_PAGE)&format=\(Constants.RESPONSE_FORMAT)&nojsoncallback=1&lat=\(lat)&lon=\(lon)&page=\(Constants.PAGE_NO)"
-        let url = URL(string: urlString)
-        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
-            guard let data = data else {
-                completion([], error)
-                return
-            }
-            do {
-                let responseObject = try JSONDecoder().decode(FlickerResponse.self, from: data)
-                completion(responseObject.photos.photo, nil)
-                
-            }catch {
-                
-            }
-            print(String(data: data, encoding: .utf8)!)
-        }
-        task.resume()*/
-        
         taskForGETRequest(url: Endpoints.getPhotoIds(lat, lon).url, responseType: FlickerResponse.self) { response, error in
             if let response = response {
                 completion(response.photos.photo, nil)
@@ -92,7 +74,7 @@ class FlickrApiClient {
     
     class func downloadImage(imageUrl: String, completion: @escaping (Data?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: Endpoints.downloadPhoto(imageUrl).url) { data, response, error in
-            print(data)
+            
             completion(data, error)
         }
         task.resume()

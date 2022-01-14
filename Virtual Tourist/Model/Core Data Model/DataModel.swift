@@ -7,6 +7,7 @@
 
 import Foundation
 
-struct LocationPins {
+struct DataModel {
     static var pins = [Pin]()
+    static var photos = [PhotoAlbum]()
 }

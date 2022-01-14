@@ -21,13 +21,17 @@ class PhotoAlbumViewController: UIViewController{
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var newCollectionButton: UIButton!
     
+    let itemsPerRow: CGFloat = 2
+    let insets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        noImagesLabel.isHidden = true
         addPinToMap()
         setupFetchedResultsController()
-        getPhotoAlbum()
+        
     }
     
     
@@ -50,70 +54,94 @@ class PhotoAlbumViewController: UIViewController{
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(String(describing: pin))-pins")
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(pin)-photos")
         fetchedResultsController.delegate = self
 
         do {
             try fetchedResultsController.performFetch()
+            getPhotosFromDb()
         } catch {
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
         }
         
         if fetchedResultsController.sections![0].numberOfObjects < 0 {
-            getPhotoAlbum()
+            getPhotosFromApi()
+        }
+    }
+    
+    private func getPhotosFromDb(){
+        isLoadingData(false)
+        if let resutls = fetchedResultsController.fetchedObjects {
+            DataModel.photos = resutls
+            
+            if resutls.isEmpty {
+                getPhotosFromApi()
+            }
         }
     }
     
     @IBAction func newCollectionButtonClick(_ sender: Any) {
-        getPhotoAlbum()
+        deleteFromDb()
+        
     }
     
-    private func getPhotoAlbum() {
+    private func getPhotosFromApi() {
         if isConnectedToInternet {
             isLoadingData(true)
             FlickrApiClient.getPhotos(lat: pin.latitude, lon: pin.longitude) { photoIds, error in
                 if photoIds.count > 0 {
-                    for item in photoIds {
-                        let photo = PhotoAlbum(context: self.dataController.viewContext)
-                        photo.pin = self.pin
-                        photo.creationDate = Date()
-                        photo.photoURL = "https://farm\(item.farmNumber).staticflickr.com/\(item.serverId)/\(item.id)_\(item.secret).jpg"
-                        print(photo.photoURL)
-                        FlickrApiClient.downloadImage(imageUrl: photo.photoURL!) { data, error in
-                            if let data = data {
-                                photo.photo = data
-                                try? self.dataController.viewContext.save()
-                                DispatchQueue.main.async {
-                                    self.collectionView.reloadData()
-                                    //self.setGetNewPhotosButtonEnabled(to: true)
-                                    //self.isLoadingData(false)
-                                }
-                            }
+                    self.savePhotos(photoIds: photoIds) {
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                            self.isLoadingData(false)
                         }
-                        
                     }
-                    
-                    self.isLoadingData(false)
                 
                 }else {
-                    // Show Lable
+                    self.noImagesLabel.isHidden = false
                     self.isLoadingData(false)
                 }
             }
         }else {
-            
+            showAlert(message: "Internet connection is not available")
         }
     
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    private func savePhotos(photoIds: [Photo], completion: @escaping () -> Void) {
+        
+        for item in photoIds {
+            let photo = PhotoAlbum(context: self.dataController.viewContext)
+            photo.pin = self.pin
+            photo.creationDate = Date()
+            photo.photoURL = "https://farm\(item.farmNumber).staticflickr.com/\(item.serverId)/\(item.id)_\(item.secret).jpg"
+            let imageUrl = URL(string: photo.photoURL!)
+            if let data = try? Data(contentsOf: imageUrl!) {
+                photo.photo = data
+            }
+            try? self.dataController.viewContext.save()
+            DataModel.photos.append(photo)
+            
+        }
+        
+        completion()
     }
-    */
+    
+    private func deleteFromDb() {
+        if let photos = fetchedResultsController.fetchedObjects {
+            DataModel.photos.removeAll()
+            for photo in photos {
+                dataController.viewContext.delete(photo)
+                do {
+                    try dataController.viewContext.save()
+                } catch {
+                    debugPrint("Error Deleting All Photo")
+                }
+            }
+        }
+        getPhotosFromApi()
+    }
+   
     private func isLoadingData(_ isLoading: Bool){
         if isLoading {
             activityIndicator.startAnimating()
@@ -143,4 +171,5 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
         default: ()
         }
     }
+    
 }

@@ -13,7 +13,7 @@ extension MapViewController  {
     func addAnnotationsToMap() {
         isLoadingData(isLoading: true)
         mapView.removeAnnotations(mapView.annotations)
-        for pin in LocationPins.pins {
+        for pin in DataModel.pins {
             
             var annotations = [MKPointAnnotation]()
             
@@ -51,9 +51,14 @@ extension MapViewController  {
         if gestureRecognizer.state != UIGestureRecognizer.State.began {
             return
         }
-        let point = gestureRecognizer.location(in: mapView)
-        let coord = mapView.convert(point, toCoordinateFrom: mapView)
-        saveLocation(coordinte: coord)
+        if isConnectedToInternet {
+            let point = gestureRecognizer.location(in: mapView)
+            let coord = mapView.convert(point, toCoordinateFrom: mapView)
+            saveLocation(coordinte: coord)
+        }else {
+            showAlert(message: "Intenet connection is not available")
+        }
+        
     }
     
     func getCityNameByCoordinate(coordinte: CLLocationCoordinate2D, completion: @escaping (String) -> Void){
@@ -78,22 +83,7 @@ extension MapViewController  {
         }
     }
     
-    private func addAnnotation(coordinate: CLLocationCoordinate2D) {
-        
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        
-        /*getCityNameByCoordinate(coordinte: coordinate) { locationName in
-            annotation.title = locationName
-            self.saveLocation(coordinte: coordinate) {
-                DispatchQueue.main.async {
-                    self.addAnnotationsToMap()
-                    self.isLoadingData(isLoading: false)
-                }
-                
-            }
-        }*/
-    }
+    
     
     private func saveLocation(coordinte: CLLocationCoordinate2D) {
         let pin = Pin(context: dataController.viewContext)
@@ -104,7 +94,7 @@ extension MapViewController  {
         
         getCityNameByCoordinate(coordinte: coordinte) { location in
             pin.locationName = location
-            LocationPins.pins.append(pin)
+            DataModel.pins.append(pin)
             try? self.dataController.viewContext.save()
             self.addAnnotationsToMap()
         }
@@ -150,7 +140,7 @@ extension MapViewController: MKMapViewDelegate {
         if control == view.rightCalloutAccessoryView {
             let destination = self.storyboard?.instantiateViewController(identifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
             destination.dataController = self.dataController
-            let pin = LocationPins.pins.first(where: {$0.latitude == view.annotation?.coordinate.latitude})
+            let pin = DataModel.pins.first(where: {$0.latitude == view.annotation?.coordinate.latitude})
            
             destination.pin = pin
             self.navigationController?.pushViewController(destination, animated: true)
